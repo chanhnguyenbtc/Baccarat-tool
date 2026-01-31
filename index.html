@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baccarat PRO MAX</title>
+<style>
+body{font-family:Arial;background:#070b16;color:#fff;text-align:center;padding:10px;}
+h2{color:#00ffd5;}
+button{padding:12px 18px;margin:6px;font-size:16px;border-radius:10px;border:none;font-weight:bold;}
+.b{background:#1e90ff;color:white;}
+.p{background:#ff4757;color:white;}
+.t{background:#ffa502;color:black;}
+.box{margin-top:12px;background:#0f1a33;padding:12px;border-radius:12px;}
+.road{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;justify-content:center;}
+.cell{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.B{background:#1e90ff;}
+.P{background:#ff4757;}
+.T{background:#ffa502;color:black;}
+</style>
+</head>
+<body>
+
+<h2>🧠 BACCARAT PRO MAX</h2>
+
+<button class="b" onclick="add('B')">Banker</button>
+<button class="p" onclick="add('P')">Player</button>
+<button class="t" onclick="add('T')">Tie</button>
+
+<div class="box" id="stats"></div>
+<div class="box">
+<div>Big Road:</div>
+<div class="road" id="road"></div>
+</div>
+<div class="box" id="ai"></div>
+
+<script>
+let data=[];
+
+function add(x){
+  data.push(x);
+  if(data.length>200) data.shift();
+  render();
+}
+
+function render(){
+  let b=data.filter(x=>x=='B').length;
+  let p=data.filter(x=>x=='P').length;
+  let t=data.filter(x=>x=='T').length;
+  let total=b+p+t;
+
+  let bRate=(b/total*100||0).toFixed(1);
+  let pRate=(p/total*100||0).toFixed(1);
+  let tRate=(t/total*100||0).toFixed(1);
+
+  document.getElementById("stats").innerHTML=
+    `📊 Tổng: ${total}<br>
+     Banker: ${b} (${bRate}%)<br>
+     Player: ${p} (${pRate}%)<br>
+     Tie: ${t} (${tRate}%)`;
+
+  let road=document.getElementById("road");
+  road.innerHTML="";
+  data.slice(-60).forEach(x=>{
+    let d=document.createElement("div");
+    d.className="cell "+x;
+    d.innerText=x;
+    road.appendChild(d);
+  });
+
+  let scoreB=b-p;
+  let scoreP=p-b;
+  let ai="⚠️ Chưa đủ dữ liệu";
+  if(total>5){
+    ai=scoreB>scoreP?"🔥 AI nghiêng BANKER":"🔥 AI nghiêng PLAYER";
+  }
+  document.getElementById("ai").innerHTML="🤖 "+ai;
+}
+</script>
+
+</body>
+</html>
